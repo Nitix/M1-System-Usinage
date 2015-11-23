@@ -29,6 +29,31 @@ int main(int argc, char *argv[]) {
 		default:
 			break;
     }
-    printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé, éxécution du code entrepot... \n" RESET);
+    printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé... \n" RESET);
+
+    //http://simplestcodings.blogspot.fr/2010/08/ipc-message-queue-implementation-in-c.html
+
+    printf(KGRN "Processus entrepot : " KWHT "Création du file de message... \n" RESET);
+
+    int msqid;
+    int msgflg = IPC_CREAT | 0666;
+    key_t key;
+
+    key = KEY;
+
+
+    if ((msqid = msgget(key, msgflg )) < 0)  { //Get the message queue ID for the given key
+      	printf(KRED "Processus entrepot : impossible de créer le pipe de communication... \n" RESET);
+    }
+    printf(KGRN "Processus entrepot : " KWHT "File de message créé : %i... \n" RESET, msqid);
+
+    printf(KGRN "Processus entrepot : " KWHT "Attente d'un message... \n" RESET);
+    struct msgbuf rcvbuffer;
+     //Receive an answer of message type 1.
+    if (msgrcv(msqid, &rcvbuffer, MAXSIZE, 1, 0) < 0)
+      	printf(KRED "Processus entrepot : impossible de récuperrer un message... \n" RESET);
+
+    printf("%s\n", rcvbuffer.mtext);
+
     return 0;
 }

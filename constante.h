@@ -1,3 +1,7 @@
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -7,3 +11,13 @@
 #define KCYN  "\x1B[36m"
 #define KWHT  "\x1B[37m"
 #define RESET "\033[0m"
+
+#define MAXSIZE 128
+#define KEY     5423    
+
+
+struct msgbuf
+{
+    long    mtype;
+    char    mtext[MAXSIZE];
+};
