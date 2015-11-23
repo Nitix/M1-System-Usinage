@@ -61,12 +61,13 @@ int main(int argc, char *argv[]) {
     printf(KGRN "Processus generateur : " KWHT "Envoie du message... \n" RESET);
 
     struct msgbuf sbuf;
+    sbuf.mtype = 1;
     size_t buflen;
 
     strcpy(sbuf.mtext, "Salut");
 	buflen = strlen(sbuf.mtext) + 1 ;
 
-    if (msgsnd(msqid, &sbuf, buflen, 0) < 0)
+    if (msgsnd(msqid, &sbuf, buflen, IPC_NOWAIT) < 0)
     {
         printf ("%d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
         printf(KRED "Processus generateur : impossible d'envoyer le message... \n" RESET);
