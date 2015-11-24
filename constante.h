@@ -15,9 +15,15 @@
 #define MAXSIZE 128
 #define KEY     5423    
 
+#define PIECES 6
+
 
 struct msgbuf
 {
     long    mtype;
     char    mtext[MAXSIZE];
 };
+
+const char * getError();
+
+#include "constante.c"

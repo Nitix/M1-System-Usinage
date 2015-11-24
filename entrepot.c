@@ -50,10 +50,12 @@ int main(int argc, char *argv[]) {
     printf(KGRN "Processus entrepot : " KWHT "Attente d'un message... \n" RESET);
     struct msgbuf rcvbuffer;
      //Receive an answer of message type 1.
-    if (msgrcv(msqid, &rcvbuffer, MAXSIZE, 1, 0) < 0)
-      	printf(KRED "Processus entrepot : impossible de récuperrer un message... \n" RESET);
-
-    printf("%s\n", rcvbuffer.mtext);
+    int i;
+    for ( i = 0; i < 21; ++i){
+    	if (msgrcv(msqid, &rcvbuffer, MAXSIZE, 1, 0) < 0)
+	    	printf(KRED "Processus entrepot : impossible de récuperrer un message... \n" RESET);
+	    printf(KGRN "Processus entrepot : " KWHT "%s\n", rcvbuffer.mtext);
+	}
 
     return 0;
 }

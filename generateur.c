@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <sys/msg.h>
 #include <unistd.h>
+
+#include <time.h>
+#include <stdlib.h>
+
 #include "constante.h"
 
 //Code du générateur de prièce brut
 
 int main(int argc, char *argv[]) {
+	int nb_piece = 20;
     printf(KGRN "Processus generateur : " KWHT "Execution du code propre réussi.. \n" RESET);
     printf(KGRN "Processus generateur : " KWHT "Création de la machine 1\n" RESET);
     printf(KGRN "Processus generateur : " KWHT "Tentative de fork... \n" RESET);
@@ -58,48 +63,85 @@ int main(int argc, char *argv[]) {
 
     printf(KGRN "Processus generateur : " KWHT "File de message récupéré : %i... \n" RESET, msqid);
 
-    printf(KGRN "Processus generateur : " KWHT "Envoie du message... \n" RESET);
-
     struct msgbuf sbuf;
-    sbuf.mtype = 1;
     size_t buflen;
 
-    strcpy(sbuf.mtext, "Salut");
-	buflen = strlen(sbuf.mtext) + 1 ;
+    char pid_m[8];
 
-    if (msgsnd(msqid, &sbuf, buflen, IPC_NOWAIT) < 0)
+    printf(KGRN "Processus generateur : " KWHT "Envoie du pid de la machine 2 à la machine 1 : %i... \n" RESET, msqid);
+    sprintf(pid_m, "%d", pidm2);
+	strcpy(sbuf.mtext, pid_m);
+	buflen = strlen(sbuf.mtext) + 1 ;
+	sbuf.mtype = pidm1;
+    if (msgsnd(msqid, &sbuf, buflen, 0 /*IPC_NOWAIT*/) < 0)
     {
-        printf ("%d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
         printf(KRED "Processus generateur : impossible d'envoyer le message... \n" RESET);
-        int errsv = errno;
-        switch(errsv){
-        	case EACCES:
-				printf(KRED "Processus generateur : The calling process does not have write permission on the message queue, and does not have the CAP_IPC_OWNER capability.\n" RESET);
+        printf(KRED "Processus generateur : %s \n" RESET, getError());
+        printf(KRED "Processus generateur : Valeures : %d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
+    }else{
+    	printf(KGRN "Processus generateur : " KWHT "Envoie du pid réussi... \n" RESET);
+	}
+
+
+
+    printf(KGRN "Processus generateur : " KWHT "Envoie du pid de la machine 1 à la machine 2 : %i... \n" RESET, msqid);
+    sprintf(pid_m, "%d", pidm1);
+	strcpy(sbuf.mtext, pid_m);
+	buflen = strlen(sbuf.mtext) + 1 ;
+	sbuf.mtype = pidm2;
+    if (msgsnd(msqid, &sbuf, buflen, 0 /*IPC_NOWAIT*/) < 0)
+    {
+        printf(KRED "Processus generateur : impossible d'envoyer le message... \n" RESET);
+        printf(KRED "Processus generateur : %s \n" RESET, getError());
+        printf(KRED "Processus generateur : Valeures : %d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
+    }else{
+    	printf(KGRN "Processus generateur : " KWHT "Envoie du pid réussi... \n" RESET);
+	}
+
+
+    printf(KGRN "Processus generateur : " KWHT "Envoie des pièces via mesage... \n" RESET);
+	srand(time(NULL));
+
+
+    int i;
+    for ( i = 0; i < nb_piece; ++i)
+    {
+		int machine = rand()%2;
+		int type_piece = rand()%3;
+		char piece[2];
+		switch(type_piece){
+			case 0:
+				piece[0] = 'A';
 				break;
-			case EAGAIN:
-				printf(KRED "Processus generateur : The message can't be sent due to the msg_qbytes limit for the queue and IPC_NOWAIT was specified in msgflg.\n" RESET);
+			case 1:
+				piece[0] = 'B';
 				break;
-			case EFAULT:
-				printf(KRED "Processus generateur : The address pointed to by msgp isn't accessible.\n" RESET);
+			case 2:
+				piece[0] = 'C';
 				break;
-			case EIDRM:
-				printf(KRED "Processus generateur : The message queue was removed.\n" RESET);
-				break;
-			case EINTR:
-				printf(KRED "Processus generateur : Sleeping on a full message queue condition, the process caught a signal.\n" RESET);
-				break;
-			case EINVAL:
-				printf(KRED "Processus generateur : Invalid msqid value, or non-positive mtype value, or invalid msgsz value (less than 0 or greater than the system value MSGMAX).\n" RESET);
-				break;
-			case ENOMEM:
-				printf(KRED "Processus generateur : The system does not have enough memory to make a copy of the message pointed to by msgp.\n" RESET);
-				break;
-			case ENOMSG:
-				printf(KRED "Processus generateur : IPC_NOWAIT was specified in msgflg and no message of the requested type existed on the message queue.\n" RESET);
-			break;
-        }
+		}
+		piece[1] = '\0';
+
+		if(machine == 0){
+	    	sbuf.mtype = pidm1;
+	    }else{
+    		sbuf.mtype = pidm2;
+	    }
+
+        printf(KGRN "Processus generateur : " KWHT "Envoie de la piece %s à la machine %d... \n" RESET, piece, machine+1);
+
+    	strcpy(sbuf.mtext, piece);
+		buflen = strlen(sbuf.mtext) + 1 ;
+
+	    if (msgsnd(msqid, &sbuf, buflen, 0 /*IPC_NOWAIT*/) < 0)
+	    {
+	        printf(KRED "Processus generateur : impossible d'envoyer le message... \n" RESET);
+	        printf(KRED "Processus generateur : %s \n" RESET, getError());
+	        printf(KRED "Processus generateur : Valeures : %d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
+	    }else{
+	    	printf(KGRN "Processus generateur : " KWHT "Envoie du message réussi... \n" RESET);
+		}
     }
-    printf(KGRN "Processus generateur : " KWHT "Envoie du message réussi... \n" RESET);
-    
+
     return 0;
 }
