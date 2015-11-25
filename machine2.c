@@ -53,7 +53,8 @@ int main(int argc, char *argv[]) {
     	if(strcmp(rcvbuffer.mtext,"B") == 0 || strcmp(rcvbuffer.mtext,"C") == 0){
 	    	printf(KGRN "Processus machine2 : " KWHT "pièce %s traité, envoi à l'entrepot\n", rcvbuffer.mtext);
 	    	rcvbuffer.mtype = 1;
-	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0 < 0))
+	    	buflen = strlen(rcvbuffer.mtext) + 1 ;
+	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0) < 0)
 		    {
 		        printf(KRED "Processus machine2 : impossible d'envoyer la pièce %s à l'entrepot... \n" RESET, rcvbuffer.mtext);
 		        printf(KRED "Processus machine2 : %s \n" RESET, getError());

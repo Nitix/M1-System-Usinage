@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     		if(verbose)
     			printf(KGRN "Processus machine1 : " KWHT "Tentative de d'éxecution du code propre à machine1... \n" RESET);
     		char *envp[] = { NULL };
-			char *argv[] = { "./machine1", s_verbose};
+			char *argv[] = { "./machine1", s_verbose, NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus machine1 : Execution du code impossible... \n" RESET);
     		return 1;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     		if(verbose)
     			printf(KGRN "Processus machine2 : " KWHT "Tentative de d'éxecution du code propre à machine2... \n" RESET);
     		char *envp[] = { NULL };
-			char *argv[] = { "./machine2", s_verbose};
+			char *argv[] = { "./machine2", s_verbose, NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus machine2 : Execution du code impossible... \n" RESET);
     		return 1;
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
     	strcpy(sbuf.mtext, piece);
 		buflen = strlen(sbuf.mtext) + 1 ;
 
-	    if (msgsnd(msqid, &sbuf, buflen, 0 /*IPC_NOWAIT*/) < 0)
+	    if (msgsnd(msqid, &sbuf, buflen, 0) < 0)
 	    {
 	        printf(KRED "Processus generateur : impossible d'envoyer le message... \n" RESET);
 	        printf(KRED "Processus generateur : %s \n" RESET, getError());

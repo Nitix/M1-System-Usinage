@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     		if(verbose)
     			printf(KGRN "Processus generateur : " KWHT "Tentative de d'éxecution du code propre à générateur... \n" RESET);
     		char *envp[] = { NULL };
-			char *argv[] = { "./generateur", s_nb_piece, s_verbose};
+			char *argv[] = { "./generateur", s_nb_piece, s_verbose, NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus generateur : Execution du code impossible... \n" RESET);
     		return 1;
