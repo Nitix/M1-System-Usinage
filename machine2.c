@@ -56,7 +56,8 @@ int main(int argc, char *argv[]) {
     	if(strcmp(rcvbuffer.mtext,"B") == 0 || strcmp(rcvbuffer.mtext,"C") == 0){
     		if(verbose)
 	    		printf(KGRN "Processus machine2 : " KWHT "pièce %s traité, envoi à l'entrepot\n", rcvbuffer.mtext);
-	    	sleep(rand()%10);
+	    	//sleep(rand()%10);
+		sleep(1);
 	    	rcvbuffer.mtype = 1;
 	    	buflen = strlen(rcvbuffer.mtext) + 1 ;
 	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0) < 0)

@@ -119,19 +119,20 @@ int main(int argc, char *argv[]) {
 			{
 				printf("| ");
 			}
-			printf("(%d/%d)\n", nb_a, nb_piece*2);
+			printf("(%d)\n", nb_a);
 			printf("B ");
 			for (j = 0; j < nb_b; ++j)
 			{
 				printf("| ");
 			}
-			printf("(%d/%d)\n", nb_b, nb_piece*2);
+			printf("(%d)\n", nb_b);
 			printf("C ");
 			for (j = 0; j < nb_c; ++j)
 			{
 				printf("| ");
 			}
-			printf("(%d/%d)\n", nb_c, nb_piece*2);
+			printf("(%d)\n", nb_c);
+			printf("Total : %d / %d\n", nb_a+nb_b+nb_c, nb_piece * 2);
 			fflush(stdout); // On ejecte l'affichage
 		}
 	}

@@ -54,11 +54,12 @@ int main(int argc, char *argv[]) {
     	}
 
     	//Différence entre machine 1 et machine 2
-    	if(strcmp(rcvbuffer.mtext,"A") == 0){
+    	if(strcmp(rcvbuffer.mtext,"A") == 0 || strcmp(rcvbuffer.mtext, "B") == 0){
     		if(verbose)
 	    		printf(KGRN "Processus machine1 : " KWHT "pièce %s traitée, envoi à l'entrepot\n", rcvbuffer.mtext);
-	    	sleep(rand()%10);
-	    	rcvbuffer.mtype = 1;
+	    	//sleep(rand()%10);
+	    	sleep(1);
+		rcvbuffer.mtype = 1;
 	    	buflen = strlen(rcvbuffer.mtext) + 1 ;
 	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0)< 0)
 		    {
