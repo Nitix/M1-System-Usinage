@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     	if (msgrcv(msqid, &rcvbuffer, MAXSIZE, 1, 0) < 0)
 	    	printf(KRED "Processus entrepot : impossible de récuperrer un message... \n" RESET);
 	    if(verbose)
-	   		printf(KGRN "Processus entrepot : " KWHT "Reception de la piece %s\n", rcvbuffer.mtext);
+	   		printf(KGRN "Processus entrepot : " KWHT "Reception de la piece %s\n" RESET, rcvbuffer.mtext);
 	   	if(strcmp(rcvbuffer.mtext,"A") == 0){
 			nb_a++;
 		}else if(strcmp(rcvbuffer.mtext,"B") == 0){
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
 			nb_c++;
 		}
 		if(verbose){
-	    	printf(KGRN "Processus entrepot : " KWHT "Entrepot remplit à %d / %d \n RESET", i, nb_piece);	    
+	    		printf(KGRN "Processus entrepot : " KWHT "Entrepot remplit à %d / %d \n" RESET, i, nb_piece*2);
 		}else{
 			printf("\e[1;1H\e[2J");
 			//printf("--------------------------------------------------------------------------------------------\n");
@@ -132,6 +132,7 @@ int main(int argc, char *argv[]) {
 				printf("| ");
 			}
 			printf("(%d/%d)\n", nb_c, nb_piece*2);
+			fflush(stdout); // On ejecte l'affichage
 		}
 	}
 
