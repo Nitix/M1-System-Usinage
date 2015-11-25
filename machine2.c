@@ -2,12 +2,16 @@
 #include <sys/msg.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "constante.h"
 
 //Code de la machine 2
 
 int main(int argc, char *argv[]) {
+	srand(time(NULL));
+
 	int verbose = atoi(argv[1]);
 	if(verbose){
    		printf(KGRN "Processus machine2 : " KWHT "Execution du code propre réussi.. \n" RESET);
@@ -19,10 +23,11 @@ int main(int argc, char *argv[]) {
     key = KEY;
 	struct msgbuf rcvbuffer;
     size_t buflen;
+      printf("lol");
 
     if ((msqid = msgget(key, 0666)) < 0)
       	printf(KRED "Processus machine2 : impossible d'ouvrir le file de messages'... \n" RESET);
-
+      printf("lol 2");
     if(verbose){
     	printf(KGRN "Processus machine2 : " KWHT "File de messages récupérée : %i... \n" RESET, msqid);
     	printf(KGRN "Processus machine2 : " KWHT "Récupération du pid de la machine 1... \n" RESET);
@@ -51,7 +56,9 @@ int main(int argc, char *argv[]) {
 
     	//Différence entre machine 1 et machine 2
     	if(strcmp(rcvbuffer.mtext,"B") == 0 || strcmp(rcvbuffer.mtext,"C") == 0){
-	    	printf(KGRN "Processus machine2 : " KWHT "pièce %s traité, envoi à l'entrepot\n", rcvbuffer.mtext);
+    		if(verbose)
+	    		printf(KGRN "Processus machine2 : " KWHT "pièce %s traité, envoi à l'entrepot\n", rcvbuffer.mtext);
+	    	sleep(rand()%10);
 	    	rcvbuffer.mtype = 1;
 	    	buflen = strlen(rcvbuffer.mtext) + 1 ;
 	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0) < 0)
@@ -65,7 +72,8 @@ int main(int argc, char *argv[]) {
     	}else{
 			buflen = strlen(rcvbuffer.mtext) + 1 ;
 			rcvbuffer.mtype = pidm1;
-		    printf(KGRN "Processus machine2 : " KWHT "Envoi de la pièce %s à la machine 1 \n" RESET, rcvbuffer.mtext);
+			if(verbose)
+		    	printf(KGRN "Processus machine2 : " KWHT "Envoi de la pièce %s à la machine 1 \n" RESET, rcvbuffer.mtext);
 		    if (msgsnd(msqid, &rcvbuffer, buflen, 0) < 0)
 		    {
 		        printf(KRED "Processus machine2 : impossible d'envoyer la pièce %s à la machine 1... \n" RESET, rcvbuffer.mtext);

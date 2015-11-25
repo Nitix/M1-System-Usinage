@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
 	int n_arg;
 	int nb_piece = 0;
 	int verbose = 0;
+
 	for(n_arg = 1; n_arg < argc; n_arg++){
 		if (strcmp(argv[n_arg], "-n") == 0) 
 		{
@@ -40,19 +41,24 @@ int main(int argc, char *argv[]) {
 	sprintf(s_verbose, "%d" ,verbose);
 
 	printf(KGRN "Processus entrepot : " KWHT "Lancement... \n" RESET);
+	if(!verbose)
+		printf("\e[1;1H\e[2J");
     int pid = getpid(); 
-    printf(KGRN "Processus entrepot : " KYEL "PID %i\n"  RESET, pid);
-    printf(KGRN "Processus entrepot : " KWHT "Création du générateur... \n" RESET);
-    if(verbose)
-    	printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
+
+    if(verbose){
+    	printf(KGRN "Processus entrepot : " KYEL "PID %i\n"  RESET, pid);
+    	printf(KGRN "Processus entrepot : " KWHT "Création du générateur... \n" RESET);
+  		printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
+    }
     pid = fork();
 
     switch(pid){
     	case 0:
     		pid = getpid(); 
-    		printf(KGRN "Processus generateur : " KYEL "PID %i\n"  RESET, pid);
-    		if(verbose)
+    		if(verbose){
+    			printf(KGRN "Processus generateur : " KYEL "PID %i\n"  RESET, pid);
     			printf(KGRN "Processus generateur : " KWHT "Tentative de d'éxecution du code propre à générateur... \n" RESET);
+    		}
     		char *envp[] = { NULL };
 			char *argv[] = { "./generateur", s_nb_piece, s_verbose, NULL};
     		execve(argv[0], argv, envp);
@@ -81,17 +87,52 @@ int main(int argc, char *argv[]) {
     }
     if(verbose){
 	    printf(KGRN "Processus entrepot : " KWHT "File de message créé : %i... \n" RESET, msqid);
-	}
-    printf(KGRN "Processus entrepot : " KWHT "Prêt à recevoir les pièces... \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Prêt à recevoir les pièces... \n" RESET);
+    }
     struct msgbuf rcvbuffer;
      //Receive an answer of message type 1.
     int i;
-    for ( i = 1; i <= nb_piece; i++){
+
+    int nb_a;
+    int nb_b;
+    int nb_c;
+    int j;
+    for ( i = 1; i <= nb_piece*2; i++){
     	if (msgrcv(msqid, &rcvbuffer, MAXSIZE, 1, 0) < 0)
 	    	printf(KRED "Processus entrepot : impossible de récuperrer un message... \n" RESET);
 	    if(verbose)
 	   		printf(KGRN "Processus entrepot : " KWHT "Reception de la piece %s\n", rcvbuffer.mtext);
-	    printf(KGRN "Processus entrepot : " KWHT "Entrepot remplit à %d / %d \n", i, nb_piece);	    
+	   	if(strcmp(rcvbuffer.mtext,"A") == 0){
+			nb_a++;
+		}else if(strcmp(rcvbuffer.mtext,"B") == 0){
+			nb_b++;
+		}else if(strcmp(rcvbuffer.mtext,"C") == 0){
+			nb_c++;
+		}
+		if(verbose){
+	    	printf(KGRN "Processus entrepot : " KWHT "Entrepot remplit à %d / %d \n RESET", i, nb_piece);	    
+		}else{
+			printf("\e[1;1H\e[2J");
+			//printf("--------------------------------------------------------------------------------------------\n");
+			printf("A ");
+			for (j = 0; j < nb_a; ++j)
+			{
+				printf("| ");
+			}
+			printf("(%d/%d)\n", nb_a, nb_piece*2);
+			printf("B ");
+			for (j = 0; j < nb_b; ++j)
+			{
+				printf("| ");
+			}
+			printf("(%d/%d)\n", nb_b, nb_piece*2);
+			printf("C ");
+			for (j = 0; j < nb_c; ++j)
+			{
+				printf("| ");
+			}
+			printf("(%d/%d)\n", nb_c, nb_piece*2);
+		}
 	}
 
     return 0;
