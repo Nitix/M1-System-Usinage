@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
 
     	//Différence entre machine 1 et machine 2
     	if(strcmp(rcvbuffer.mtext,"1") ){
-	    	printf(KGRN "Processus machine1 : " KWHT "pièce %s traité, envoi à l'entrepot\n", rcvbuffer.mtext);
+	    	printf(KGRN "Processus machine1 : " KWHT "pièce %s traitée, envoi à l'entrepot\n", rcvbuffer.mtext);
 	    	rcvbuffer.mtype = 1;
 	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0 < 0))
 		    {

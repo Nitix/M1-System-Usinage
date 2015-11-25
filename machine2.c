@@ -21,10 +21,10 @@ int main(int argc, char *argv[]) {
     size_t buflen;
 
     if ((msqid = msgget(key, 0666)) < 0)
-      	printf(KRED "Processus machine2 : impossible d'ouvrir le file de message'... \n" RESET);
+      	printf(KRED "Processus machine2 : impossible d'ouvrir le file de messages'... \n" RESET);
 
     if(verbose){
-    	printf(KGRN "Processus machine2 : " KWHT "File de message récupéré : %i... \n" RESET, msqid);
+    	printf(KGRN "Processus machine2 : " KWHT "File de messages récupérée : %i... \n" RESET, msqid);
     	printf(KGRN "Processus machine2 : " KWHT "Récupération du pid de la machine 1... \n" RESET);
     }
 
@@ -57,21 +57,21 @@ int main(int argc, char *argv[]) {
 		    {
 		        printf(KRED "Processus machine2 : impossible d'envoyer la pièce %s à l'entrepot... \n" RESET, rcvbuffer.mtext);
 		        printf(KRED "Processus machine2 : %s \n" RESET, getError());
-		        printf(KRED "Processus machine2 : Valeures : %d, %ld, %s, %zd\n", msqid, rcvbuffer.mtype, rcvbuffer.mtext, buflen);
+		        printf(KRED "Processus machine2 : Valeurs : %d, %ld, %s, %zd\n", msqid, rcvbuffer.mtype, rcvbuffer.mtext, buflen);
 		    }else if(verbose){
-		    	printf(KGRN "Processus machine2 : " KWHT "Envoie de la pièce %s à l'entrepot réussi \n" RESET, rcvbuffer.mtext);
+		    	printf(KGRN "Processus machine2 : " KWHT "Envoi de la pièce %s à l'entrepot réussi \n" RESET, rcvbuffer.mtext);
 		    }
     	}else{
 			buflen = strlen(rcvbuffer.mtext) + 1 ;
 			rcvbuffer.mtype = pidm1;
-		    printf(KGRN "Processus machine2 : " KWHT "Envoie de la pièce %s à la machine 1 \n" RESET, rcvbuffer.mtext);
+		    printf(KGRN "Processus machine2 : " KWHT "Envoi de la pièce %s à la machine 1 \n" RESET, rcvbuffer.mtext);
 		    if (msgsnd(msqid, &rcvbuffer, buflen, 0) < 0)
 		    {
 		        printf(KRED "Processus machine2 : impossible d'envoyer la pièce %s à la machine 1... \n" RESET, rcvbuffer.mtext);
 		        printf(KRED "Processus machine2 : %s \n" RESET, getError());
-		        printf(KRED "Processus machine2 : Valeures : %d, %ld, %s, %zd\n", msqid, rcvbuffer.mtype, rcvbuffer.mtext, buflen);
+		        printf(KRED "Processus machine2 : Valeurs : %d, %ld, %s, %zd\n", msqid, rcvbuffer.mtype, rcvbuffer.mtext, buflen);
 		    }else if (verbose){
-		    	printf(KGRN "Processus machine2 : " KWHT "Envoie réussi \n" RESET);
+		    	printf(KGRN "Processus machine2 : " KWHT "Envoi réussi \n" RESET);
 		    }
     	}
 	}
