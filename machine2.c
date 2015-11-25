@@ -23,11 +23,9 @@ int main(int argc, char *argv[]) {
     key = KEY;
 	struct msgbuf rcvbuffer;
     size_t buflen;
-      printf("lol");
 
     if ((msqid = msgget(key, 0666)) < 0)
       	printf(KRED "Processus machine2 : impossible d'ouvrir le file de messages'... \n" RESET);
-      printf("lol 2");
     if(verbose){
     	printf(KGRN "Processus machine2 : " KWHT "File de messages récupérée : %i... \n" RESET, msqid);
     	printf(KGRN "Processus machine2 : " KWHT "Récupération du pid de la machine 1... \n" RESET);
