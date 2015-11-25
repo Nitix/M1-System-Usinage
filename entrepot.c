@@ -93,9 +93,9 @@ int main(int argc, char *argv[]) {
      //Receive an answer of message type 1.
     int i;
 
-    int nb_a;
-    int nb_b;
-    int nb_c;
+    int nb_a = 0;
+    int nb_b = 0;
+    int nb_c = 0;
     int j;
     for ( i = 1; i <= nb_piece*2; i++){
     	if (msgrcv(msqid, &rcvbuffer, MAXSIZE, 1, 0) < 0)
