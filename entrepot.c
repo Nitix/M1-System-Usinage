@@ -17,7 +17,12 @@ int main(int argc, char *argv[]) {
 	for(n_arg = 1; n_arg < argc; n_arg++){
 		if (strcmp(argv[n_arg], "-n") == 0) 
 		{
-			nb_piece = atoi(argv[++n_arg]);
+			++n_arg;
+			if(argc == n_arg){
+				printf(KRED "Nombre de pièce manquant après -n\n" RESET);
+				return 1;
+			}
+			nb_piece = atoi(argv[n_arg]);
 		} 
 		else if (strcmp(argv[n_arg], "-v") == 0)
 		{
@@ -25,11 +30,21 @@ int main(int argc, char *argv[]) {
 		}
 		else if (strcmp(argv[n_arg], "-t1") == 0)
 		{
-			t1 = atoi(argv[++n_arg]);
+			++n_arg;
+			if(argc == n_arg){
+				printf(KRED "Temps manquant après -t1\n" RESET);
+				return 1;
+			}
+			t1 = atoi(argv[n_arg]);
 		}
 		else if (strcmp(argv[n_arg], "-t2") == 0)
 		{
-			t2 = atoi(argv[++n_arg]);
+			++n_arg;
+			if(argc == n_arg){
+				printf(KRED "Temps manquant après -t2\n" RESET);
+				return 1;
+			}
+			t2 = atoi(argv[n_arg]);
 		}
 		else if (strcmp(argv[n_arg], "-h") == 0 || strcmp(argv[n_arg], "--help") == 0)
 		{
