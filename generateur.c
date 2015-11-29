@@ -17,6 +17,10 @@ int main(int argc, char *argv[]) {
     char s_verbose[2];
     strcpy(s_verbose, argv[2]);
     int verbose = atoi(argv[2]);
+    char s_t1[8];
+    strcpy(s_t1, argv[3]);
+    char s_t2[8];
+    strcpy(s_t2, argv[4]); 
 
     if(verbose){
     	printf(KGRN "Processus generateur : " KWHT "Execution du code propre réussi.. \n" RESET);
@@ -33,7 +37,7 @@ int main(int argc, char *argv[]) {
     			printf(KGRN "Processus machine1 : " KWHT "Tentative de d'éxecution du code propre à machine1... \n" RESET);
             }
     		char *envp[] = { NULL };
-			char *argv[] = { "./machine1", s_verbose, NULL};
+			char *argv[] = { "./machine1", s_verbose, s_t1, NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus machine1 : Execution du code impossible... \n" RESET);
     		return 1;
@@ -57,7 +61,7 @@ int main(int argc, char *argv[]) {
     			printf(KGRN "Processus machine2 : " KWHT "Tentative de d'éxecution du code propre à machine2... \n" RESET);
             }
     		char *envp[] = { NULL };
-			char *argv[] = { "./machine2", s_verbose, NULL};
+			char *argv[] = { "./machine2", s_verbose, s_t2, NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus machine2 : Execution du code impossible... \n" RESET);
     		return 1;

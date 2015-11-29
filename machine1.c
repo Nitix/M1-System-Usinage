@@ -13,6 +13,8 @@ int main(int argc, char *argv[]) {
 	srand(time(NULL));
 
 	int verbose = atoi(argv[1]);
+	int t1 = atoi(argv[2]);
+	
 	if(verbose){
    		printf(KGRN "Processus machine1 : " KWHT "Execution du code propre réussi.. \n" RESET);
    		printf(KGRN "Processus machine1 : " KWHT "Récupération du file de message... \n" RESET);
@@ -55,11 +57,14 @@ int main(int argc, char *argv[]) {
 
     	//Différence entre machine 1 et machine 2
     	if(strcmp(rcvbuffer.mtext,"A") == 0 || strcmp(rcvbuffer.mtext, "B") == 0){
+    		if(t1 < 0){
+	    		sleep(rand()%10);
+    		}else{
+	    		sleep(t1);
+    		}
     		if(verbose)
 	    		printf(KGRN "Processus machine1 : " KWHT "pièce %s traitée, envoi à l'entrepot\n", rcvbuffer.mtext);
-	    	//sleep(rand()%10);
-	    	sleep(1);
-		rcvbuffer.mtype = 1;
+			rcvbuffer.mtype = 1;
 	    	buflen = strlen(rcvbuffer.mtext) + 1 ;
 	    	if (msgsnd(msqid, &rcvbuffer, buflen, 0)< 0)
 		    {
