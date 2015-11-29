@@ -2,6 +2,8 @@
 #include <sys/msg.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <signal.h>
+
 
 #include "constante.h"
 
@@ -50,6 +52,13 @@ int main(int argc, char *argv[]) {
 		printf(KRED "Nombre de pièce incorrect ou paramètre -n manquant \n" RESET);
 		return 1;
 	}
+
+    int msqid;
+    int msgflg = IPC_CREAT | 0666;
+    key_t key;
+
+    key = KEY;
+
 	char s_nb_piece[8];
 	sprintf(s_nb_piece, "%d" ,nb_piece);
 	char s_verbose[2];
@@ -66,9 +75,105 @@ int main(int argc, char *argv[]) {
 
     if(verbose){
     	printf(KGRN "Processus entrepot : " KYEL "PID %i\n"  RESET, pid);
+    	printf(KGRN "Processus entrepot : " KWHT "Création du file de message... \n" RESET);
+    }
+
+    if ((msqid = msgget(key, msgflg )) < 0)  { //Get the message queue ID for the given key
+      	printf(KRED "Processus entrepot : impossible de créer la queue de message... \n" RESET);
+    }
+    if(verbose){
+	    printf(KGRN "Processus entrepot : " KWHT "File de message créé : %i... \n" RESET, msqid);
+	    printf(KGRN "Processus entrepot : " KWHT "Création de la machine 1\n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
+    }
+    struct msgbuf sbuf;
+    size_t buflen;
+
+    int pidm1 = fork();
+    switch(pidm1){
+    	case 0:
+    		pidm1 = getpid(); 
+    		if(verbose) {
+                printf(KGRN "Processus machine1 : " KYEL "PID %i\n"  RESET, pidm1);
+    			printf(KGRN "Processus machine1 : " KWHT "Tentative de d'éxecution du code propre à machine1... \n" RESET);
+            }
+    		char *envp[] = { NULL };
+			char *argv[] = { "./machine1", s_verbose, s_t1, NULL};
+    		execve(argv[0], argv, envp);
+    		printf(KRED "Processus machine1 : Execution du code impossible... \n" RESET);
+    		return 1;
+		case -1:
+			printf(KRED "Processus entrepot : impossible de lancer le fork... \n" RESET);
+			return 1;
+		default:
+			break;
+    }
+    if(verbose){
+    	printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé \n" RESET);
+        printf(KGRN "Processus entrepot : " KWHT "Création de la machine 2 \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
+    }
+    int pidm2 = fork();
+    switch(pidm2){
+    	case 0:
+    		pidm2 = getpid(); 
+            if(verbose){
+    		    printf(KGRN "Processus machine2 : " KYEL "PID %i\n"  RESET, pidm2);
+    			printf(KGRN "Processus machine2 : " KWHT "Tentative de d'éxecution du code propre à machine2... \n" RESET);
+            }
+    		char *envp[] = { NULL };
+			char *argv[] = { "./machine2", s_verbose, s_t2, NULL};
+    		execve(argv[0], argv, envp);
+    		printf(KRED "Processus machine2 : Execution du code impossible... \n" RESET);
+    		return 1;
+		case -1:
+			printf(KRED "Processus entrepot : impossible de lancer le fork... \n" RESET);
+			return 1;
+		default:
+			break;
+    }
+    if(verbose){
+    	printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé... \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Envoie du pid de la machine 2 à la machine 1... \n" RESET);
+	}
+	char pid_m[8];
+    sprintf(pid_m, "%d", pidm2);
+	strcpy(sbuf.mtext, pid_m);
+	buflen = strlen(sbuf.mtext) + 1 ;
+	sbuf.mtype = pidm1;
+
+    if (msgsnd(msqid, &sbuf, buflen, 0) < 0)
+    {
+        printf(KRED "Processus entrepot : impossible d'envoyer le message... \n" RESET);
+        printf(KRED "Processus entrepot : %s \n" RESET, getError());
+        printf(KRED "Processus entrepot : Valeures : %d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
+    }else if(verbose){
+    	printf(KGRN "Processus entrepot : " KWHT "Envoie du pid réussi... \n" RESET);
+	}
+
+
+    if(verbose)
+    	printf(KGRN "Processus entrepot : " KWHT "Envoie du pid de la machine 1 à la machine 2... \n" RESET);
+    sprintf(pid_m, "%d", pidm1);
+	strcpy(sbuf.mtext, pid_m);
+	buflen = strlen(sbuf.mtext) + 1 ;
+	sbuf.mtype = pidm2;
+    if (msgsnd(msqid, &sbuf, buflen, 0) < 0)
+    {
+        printf(KRED "Processus entrepot : impossible d'envoyer le message... \n" RESET);
+        printf(KRED "Processus entrepot : %s \n" RESET, getError());
+        printf(KRED "Processus entrepot : Valeures : %d, %ld, %s, %zd\n", msqid, sbuf.mtype, sbuf.mtext, buflen);
+    }else if(verbose){
+    	printf(KGRN "Processus entrepot : " KWHT "Envoie du pid réussi... \n" RESET);
     	printf(KGRN "Processus entrepot : " KWHT "Création du générateur... \n" RESET);
   		printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
     }
+
+    char s_pidm1[8];
+	sprintf(s_pidm1, "%d" ,pidm1);
+	char s_pidm2[8];
+	sprintf(s_pidm2, "%d" ,pidm2);
+
     pid = fork();
 
     switch(pid){
@@ -79,7 +184,7 @@ int main(int argc, char *argv[]) {
     			printf(KGRN "Processus generateur : " KWHT "Tentative de d'éxecution du code propre à générateur... \n" RESET);
     		}
     		char *envp[] = { NULL };
-			char *argv[] = { "./generateur", s_nb_piece, s_verbose, s_t1, s_t2,NULL};
+			char *argv[] = { "./generateur", s_nb_piece, s_verbose, s_pidm1, s_pidm2,NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus generateur : Execution du code impossible... \n" RESET);
     		return 1;
@@ -91,23 +196,11 @@ int main(int argc, char *argv[]) {
     }
     if(verbose){
     	printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé... \n" RESET);
-       	printf(KGRN "Processus entrepot : " KWHT "Création du file de message... \n" RESET);
-    }
-
-    int msqid;
-    int msgflg = IPC_CREAT | 0666;
-    key_t key;
-
-    key = KEY;
-
-
-    if ((msqid = msgget(key, msgflg )) < 0)  { //Get the message queue ID for the given key
-      	printf(KRED "Processus entrepot : impossible de créer le pipe de communication... \n" RESET);
-    }
-    if(verbose){
-	    printf(KGRN "Processus entrepot : " KWHT "File de message créé : %i... \n" RESET, msqid);
     	printf(KGRN "Processus entrepot : " KWHT "Prêt à recevoir les pièces... \n" RESET);
     }
+
+
+
     struct msgbuf rcvbuffer;
      //Receive an answer of message type 1.
     int i;
@@ -156,5 +249,11 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	kill(pidm1, SIGINT);
+	kill(pidm2, SIGINT);
+
+	if(msgctl(msqid, IPC_RMID, NULL) < 0){
+	    	printf(KRED "Processus entrepot : impossible de fermer la queue de message... \n" RESET);
+	} 
     return 0;
 }
