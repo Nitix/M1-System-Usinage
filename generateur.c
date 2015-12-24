@@ -18,6 +18,7 @@ int main(int argc, char *argv[]) {
     int verbose = atoi(argv[2]);
     int pidm1 = atoi(argv[3]);
     int pidm2 = atoi(argv[4]); 
+    int tgene = atoi(argv[5]);
 
     if(verbose){
     	printf(KGRN "Processus generateur : " KWHT "Execution du code propre réussi.. \n" RESET);
@@ -47,6 +48,11 @@ int main(int argc, char *argv[]) {
     int i;
     for ( i = 0; i < nb_piece*2; ++i)
     {
+	    if(tgene < 0){
+    		sleep(rand()%10);
+		}else{
+    		sleep(tgene);
+    	}
 		int machine = i%2;
 		int type_piece = rand()%3;
 		char piece[2];

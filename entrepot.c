@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
 	int verbose = 0;
 	int t1 = -1;
 	int t2 = -1;
+	int tg = -1;
 
 	for(n_arg = 1; n_arg < argc; n_arg++){
 		if (strcmp(argv[n_arg], "-n") == 0) 
@@ -46,14 +47,25 @@ int main(int argc, char *argv[]) {
 			}
 			t2 = atoi(argv[n_arg]);
 		}
+		else if (strcmp(argv[n_arg], "-tg") == 0)
+		{
+			++n_arg;
+			if(argc == n_arg){
+				printf(KRED "Temps manquant après -tg\n" RESET);
+				return 1;
+			}
+			tg = atoi(argv[n_arg]);
+		}
 		else if (strcmp(argv[n_arg], "-h") == 0 || strcmp(argv[n_arg], "--help") == 0)
 		{
-			printf("%s -n nombre [-t1 temps] [-t2 temps] [-v]\n", argv[0]);
+			printf("%s -n nombre [-t1 temps] [-t2 temps] [-tg temps] [-v]\n", argv[0]);
 			printf("\t-n nombre de pièces à fabriquer\n");
 			printf("\t-t1 Temps de fabrication de la machine 1\n");
 			printf("\t-t2 Temps de fabrication de la machine 2\n");
+			printf("\t-tg Temps de génration de pièce\n");
 			printf("\t-v mode verbose\n");
-
+			printf("\n");
+			printf("Si le t1, t2 ou tg ne sont pas spécifiés alors ça sera une variable aléatoire entre 0 et 10 secondes\n");
 			printf("\n");
 			printf("Si le temps n'est pas spécifié, cela sera une valeur aléatoire entre 0 et 10 secondes pour chaque machine et pièce\n");
 			return 0;
@@ -64,7 +76,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	if(nb_piece == 0){
-		printf(KRED "Nombre de pièce incorrect ou paramètre -n manquant \n" RESET);
+		printf(KRED "Nombre de pièce incorrect ou paramètre -n manquant \nTapez -h ou --help pour plus d'informations" RESET);
 		return 1;
 	}
 
@@ -82,6 +94,8 @@ int main(int argc, char *argv[]) {
 	sprintf(s_t1, "%d" ,t1);
 	char s_t2[8];
 	sprintf(s_t2, "%d" ,t2);
+	char s_tg[8];
+	sprintf(s_tg, "%d" ,tg);
 
 	printf(KGRN "Processus entrepot : " KWHT "Lancement... \n" RESET);
 	if(!verbose)
@@ -199,7 +213,7 @@ int main(int argc, char *argv[]) {
     			printf(KGRN "Processus generateur : " KWHT "Tentative de d'éxecution du code propre à générateur... \n" RESET);
     		}
     		char *envp[] = { NULL };
-			char *argv[] = { "./generateur", s_nb_piece, s_verbose, s_pidm1, s_pidm2,NULL};
+			char *argv[] = { "./generateur", s_nb_piece, s_verbose, s_pidm1, s_pidm2, s_tg, NULL};
     		execve(argv[0], argv, envp);
     		printf(KRED "Processus generateur : Execution du code impossible... \n" RESET);
     		return 1;
