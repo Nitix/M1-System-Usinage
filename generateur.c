@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     }
 
 	if(verbose){
-    	printf(KGRN "Processus generateur : " KWHT "File de message récupéré : %i... \n" RESET, msqid);
+    	printf(KGRN "Processus generateur : " KWHT "File de message récupérée : %i... \n" RESET, msqid);
 	}
     struct msgbuf sbuf;
     size_t buflen;

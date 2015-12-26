@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
       	printf(KRED "Processus entrepot : impossible de créer la file de message... \n" RESET);
     }
     if(verbose){
-	    printf(KGRN "Processus entrepot : " KWHT "File de message créé : %i... \n" RESET, msqid);
+	    printf(KGRN "Processus entrepot : " KWHT "File de message créée : %i... \n" RESET, msqid);
 	    printf(KGRN "Processus entrepot : " KWHT "Création de la machine 1\n" RESET);
     	printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
     }
@@ -132,13 +132,13 @@ int main(int argc, char *argv[]) {
     		printf(KRED "Processus machine1 : Execution du code impossible... \n" RESET);
     		return 1;
 		case -1:
-			printf(KRED "Processus entrepot : impossible de lancer le fork... \n" RESET);
+			printf(KRED "Processus entrepot : iIpossible de lancer le fork... \n" RESET);
 			return 1;
 		default:
 			break;
     }
     if(verbose){
-    	printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Fork créé et lancé \n" RESET);
         printf(KGRN "Processus entrepot : " KWHT "Création de la machine 2 \n" RESET);
     	printf(KGRN "Processus entrepot : " KWHT "Tentative de fork... \n" RESET);
     }
@@ -148,21 +148,21 @@ int main(int argc, char *argv[]) {
     		pidm2 = getpid(); 
             if(verbose){
     		    printf(KGRN "Processus machine2 : " KYEL "PID %i\n"  RESET, pidm2);
-    			printf(KGRN "Processus machine2 : " KWHT "Tentative de d'éxecution du code propre à machine2... \n" RESET);
+    			printf(KGRN "Processus machine2 : " KWHT "Tentative de d'exécution du code propre à machine2... \n" RESET);
             }
     		char *envp[] = { NULL };
 			char *argv[] = { "./machine2", s_verbose, s_t2, NULL};
     		execve(argv[0], argv, envp);
-    		printf(KRED "Processus machine2 : Execution du code impossible... \n" RESET);
+    		printf(KRED "Processus machine2 : Exécution du code impossible... \n" RESET);
     		return 1;
 		case -1:
-			printf(KRED "Processus entrepot : impossible de lancer le fork... \n" RESET);
+			printf(KRED "Processus entrepot : Impossible de lancer le fork... \n" RESET);
 			return 1;
 		default:
 			break;
     }
     if(verbose){
-    	printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé... \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Fork créé et lancé... \n" RESET);
     	printf(KGRN "Processus entrepot : " KWHT "Envoie du pid de la machine 2 à la machine 1... \n" RESET);
 	}
 	char pid_m[8];
@@ -210,7 +210,7 @@ int main(int argc, char *argv[]) {
     		pid = getpid(); 
     		if(verbose){
     			printf(KGRN "Processus generateur : " KYEL "PID %i\n"  RESET, pid);
-    			printf(KGRN "Processus generateur : " KWHT "Tentative de d'éxecution du code propre à générateur... \n" RESET);
+    			printf(KGRN "Processus generateur : " KWHT "Tentative de d'éeécution du code propre à générateur... \n" RESET);
     		}
     		char *envp[] = { NULL };
 			char *argv[] = { "./generateur", s_nb_piece, s_verbose, s_pidm1, s_pidm2, s_tg, NULL};
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
 			break;
     }
     if(verbose){
-    	printf(KGRN "Processus entrepot : " KWHT "Fork crée et lancé... \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Fork créé et lancé... \n" RESET);
     	printf(KGRN "Processus entrepot : " KWHT "Prêt à recevoir les pièces... \n" RESET);
     }
 

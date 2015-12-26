@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	int t1 = atoi(argv[2]);
 	
 	if(verbose){
-   		printf(KGRN "Processus machine1 : " KWHT "Execution du code propre réussi.. \n" RESET);
+   		printf(KGRN "Processus machine1 : " KWHT "Exéecution du code propre réussi.. \n" RESET);
    		printf(KGRN "Processus machine1 : " KWHT "Récupération de la file de message... \n" RESET);
 	}
 
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
       	printf(KRED "Processus machine1 : impossible d'ouvrir la file de message'... \n" RESET);
 
     if(verbose){
-    	printf(KGRN "Processus machine1 : " KWHT "File de message récupéré : %i... \n" RESET, msqid);
+    	printf(KGRN "Processus machine1 : " KWHT "File de message récupérée : %i... \n" RESET, msqid);
     	printf(KGRN "Processus machine1 : " KWHT "Récupération du pid de la machine 2... \n" RESET);
     }
 

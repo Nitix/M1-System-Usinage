@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	int t2 = atoi(argv[2]);
 
 	if(verbose){
-   		printf(KGRN "Processus machine2 : " KWHT "Execution du code propre réussi.. \n" RESET);
+   		printf(KGRN "Processus machine2 : " KWHT "Exécution du code propre réussi.. \n" RESET);
    		printf(KGRN "Processus machine2 : " KWHT "Récupération de la file de message... \n" RESET);
 	}
 
