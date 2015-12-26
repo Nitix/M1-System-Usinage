@@ -62,12 +62,12 @@ int main(int argc, char *argv[]) {
 			printf("\t-n nombre de pièces à fabriquer\n");
 			printf("\t-t1 Temps de fabrication de la machine 1\n");
 			printf("\t-t2 Temps de fabrication de la machine 2\n");
-			printf("\t-tg Temps de génération de pièce\n");
+			printf("\t-tg Temps de génération d'une pièce\n");
 			printf("\t-v mode verbose\n");
 			printf("\n");
 			printf("Si le t1, t2 ou tg ne sont pas spécifiés alors ça sera une variable aléatoire entre 0 et 10 secondes\n");
 			printf("\n");
-			printf("Si le temps n'est pas spécifié, cela sera une valeur aléatoire entre 0 et 10 secondes pour chaque machine et pièce\n");
+			printf("Si le temps n'est pas spécifié, alors le temps sera une valeur aléatoire entre 0 et 10 secondes pour chaque machine et pièce\n");
 			return 0;
 		}
 		else
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	if(nb_piece == 0){
-		printf(KRED "Nombre de pièce incorrect ou paramètre -n manquant \nTapez -h ou --help pour plus d'informations" RESET);
+		printf(KRED "Nombre de pièces incorrect ou paramètre -n manquant \nTapez -h ou --help pour plus d'informations" RESET);
 		return 1;
 	}
 
