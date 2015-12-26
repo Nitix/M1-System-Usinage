@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
 			printf("\t-n nombre de pièces à fabriquer\n");
 			printf("\t-t1 Temps de fabrication de la machine 1\n");
 			printf("\t-t2 Temps de fabrication de la machine 2\n");
-			printf("\t-tg Temps de génration de pièce\n");
+			printf("\t-tg Temps de génération de pièce\n");
 			printf("\t-v mode verbose\n");
 			printf("\n");
 			printf("Si le t1, t2 ou tg ne sont pas spécifiés alors ça sera une variable aléatoire entre 0 et 10 secondes\n");
