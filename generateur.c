@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     size_t buflen;
 
     if(verbose){
-        printf(KGRN "Processus generateur : " KWHT "Envoie de %d pièces via mesage... \n" RESET, nb_piece);
+        printf(KGRN "Processus generateur : " KWHT "Envoie de %d pièces via message... \n" RESET, nb_piece);
     }
 	srand(time(NULL));
 
