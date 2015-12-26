@@ -104,11 +104,11 @@ int main(int argc, char *argv[]) {
 
     if(verbose){
     	printf(KGRN "Processus entrepot : " KYEL "PID %i\n"  RESET, pid);
-    	printf(KGRN "Processus entrepot : " KWHT "Création du file de message... \n" RESET);
+    	printf(KGRN "Processus entrepot : " KWHT "Création de la file de message... \n" RESET);
     }
 
     if ((msqid = msgget(key, msgflg )) < 0)  { //Get the message queue ID for the given key
-      	printf(KRED "Processus entrepot : impossible de créer la queue de message... \n" RESET);
+      	printf(KRED "Processus entrepot : impossible de créer la file de message... \n" RESET);
     }
     if(verbose){
 	    printf(KGRN "Processus entrepot : " KWHT "File de message créé : %i... \n" RESET, msqid);
@@ -282,7 +282,7 @@ int main(int argc, char *argv[]) {
 	kill(pidm2, SIGINT);
 
 	if(msgctl(msqid, IPC_RMID, NULL) < 0){
-	    	printf(KRED "Processus entrepot : impossible de fermer la queue de message... \n" RESET);
+	    	printf(KRED "Processus entrepot : impossible de fermer la file de message... \n" RESET);
 	} 
     return 0;
 }

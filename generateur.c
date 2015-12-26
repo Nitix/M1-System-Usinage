@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
     if(verbose){
     	printf(KGRN "Processus generateur : " KWHT "Execution du code propre réussi.. \n" RESET);
-        printf(KGRN "Processus generateur : " KWHT "Récupération du file de message... \n" RESET);
+        printf(KGRN "Processus generateur : " KWHT "Récupération de la file de message... \n" RESET);
     }
 
 	int msqid;
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
     key = KEY;
 
     if ((msqid = msgget(key, 0666)) < 0){
-      	printf(KRED "Processus generateur : impossible d'ouvrir le file de message'... \n" RESET);
+      	printf(KRED "Processus generateur : impossible d'ouvrir la file de message'... \n" RESET);
     }
 
 	if(verbose){

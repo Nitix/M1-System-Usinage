@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
 	
 	if(verbose){
    		printf(KGRN "Processus machine1 : " KWHT "Execution du code propre réussi.. \n" RESET);
-   		printf(KGRN "Processus machine1 : " KWHT "Récupération du file de message... \n" RESET);
+   		printf(KGRN "Processus machine1 : " KWHT "Récupération de la file de message... \n" RESET);
 	}
 
 	int msqid;
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
     size_t buflen;
 
     if ((msqid = msgget(key, 0666)) < 0)
-      	printf(KRED "Processus machine1 : impossible d'ouvrir le file de message'... \n" RESET);
+      	printf(KRED "Processus machine1 : impossible d'ouvrir la file de message'... \n" RESET);
 
     if(verbose){
     	printf(KGRN "Processus machine1 : " KWHT "File de message récupéré : %i... \n" RESET, msqid);
